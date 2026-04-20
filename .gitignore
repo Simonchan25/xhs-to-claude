@@ -1,0 +1,20 @@
+# macOS metadata (external / exFAT volumes)
+.DS_Store
+._*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Downloads produced by fetch.py during testing
+downloads/
+
+# Editor
+.vscode/
+.idea/
+
+# Keep examples tracked
+!examples/**

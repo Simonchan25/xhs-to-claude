@@ -1,0 +1,35 @@
+{
+  "platform": "xhs",
+  "url": "https://www.xiaohongshu.com/discovery/item/69e0f015000000001f00010c?app_platform=ios&app_version=9.25&share_from_user_hidden=true&xsec_source=app_share&type=video&xsec_token=CBVXBdQqfmrzd5UboB4xHo29_orB37Pskd1DvyPZ2l6DA=&author_share=1&xhsshare=CopyLink&shareRedId=N0pIQkU2RTo2NzUyOTgwNjY0OTdFSThA&apptime=1776432837&share_id=4ec114ac674848df87725f595cbb14a2",
+  "noteId": "69e0f015000000001f00010c",
+  "type": "video",
+  "title": "上帝视角的量化分析！",
+  "author": "二憨量化",
+  "desc": "量化3.0时代要来了！\n如果喜欢的人多，我就开源！",
+  "cover": "cover.jpg",
+  "videoUrls": [
+    "http://sns-video-alos.xhscdn.com/stream/1/110/114/01e9e0f01409d393010370019d96aebc74_114.mp4?sign=7c5051c4cfc1247be26ec5521f275017&t=69e239f8",
+    "http://sns-video-alos.xhscdn.com/stream/1/110/259/01e9e0f01409d393010370039d96aae8c4_259.mp4?sign=c57f51e6425ec1b3c71eca50f12646f8&t=69e239f8"
+  ],
+  "videoFile": "video.mp4",
+  "duration": 208.31,
+  "frames": [
+    "frame_00.jpg",
+    "frame_01.jpg",
+    "frame_02.jpg",
+    "frame_03.jpg",
+    "frame_04.jpg",
+    "frame_05.jpg",
+    "frame_06.jpg",
+    "frame_07.jpg",
+    "frame_08.jpg",
+    "frame_09.jpg",
+    "frame_10.jpg",
+    "frame_11.jpg"
+  ],
+  "transcript": {
+    "txt": "video.txt",
+    "srt": "video.srt",
+    "model": "mlx-community/whisper-large-v3-turbo"
+  }
+}
