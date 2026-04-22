@@ -48,7 +48,7 @@ python3 ~/.claude/skills/share-link/fetch.py "<url>"
 
 - ✅ xhs 视频笔记：标题 / 文案 / 作者 / 封面 / 视频 / 12 帧 / **whisper 转录**
 - ✅ xhs 图文笔记：标题 / 文案 / 作者 / 封面 / 多图
-- ⚠️ bilibili：脚本里是占位，未实现（后续加 yt-dlp 即可）
+- ✅ bilibili 视频：标题 / UP主 / 简介 / 封面 / 视频（偏好 H.264）/ 每分钟一帧（12-36）/ **whisper 转录**
 - ❌ 评论抓取：未内置
 
 ## 转录配置
@@ -61,8 +61,10 @@ python3 ~/.claude/skills/share-link/fetch.py "<url>"
 ## 依赖
 
 - `python3` + `ffmpeg` / `ffprobe` 必需
+- `yt-dlp` 仅 bilibili 需要（`pip install yt-dlp`）；不装时 xhs 链接照常工作
 - `mlx_whisper`（转录）可选，不装就自动跳过转录，其他照常。装：`pip install mlx-whisper`（需要 Apple Silicon）
-- 注意脚本用 `shutil.which("mlx_whisper")` 在 PATH 里找。如果你在不同 Python 环境（venv/pyenv）切换，可能看不到 conda base 里装的 mlx-whisper；在当前环境补装一次即可
+- 注意脚本用 `shutil.which(...)` 在 PATH 里找 yt-dlp / mlx_whisper。切 Python 环境（venv/pyenv）时可能看不到全局装的包，在当前环境补装一次即可
+- B 站偏好 H.264（avc1）格式，因为老版 ffmpeg 无法解码 AV1（抽帧会失败）。`-f "bv*[vcodec^=avc1]+ba/..."` 已处理
 
 ## 边界情况
 

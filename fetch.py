@@ -187,8 +187,59 @@ def fetch_xhs(url, outdir):
 
 
 def fetch_bilibili(url, outdir):
-    return {"platform": "bilibili", "url": url,
-            "status": "not_implemented — add yt-dlp later"}
+    if not shutil.which("yt-dlp"):
+        return {"platform": "bilibili", "url": url,
+                "error": "yt-dlp not installed — run: pip install yt-dlp"}
+    probe = run(["yt-dlp", "--dump-single-json", "--no-download", "--no-playlist", url])
+    if probe.returncode != 0:
+        return {"platform": "bilibili", "url": url, "error": probe.stderr[-500:]}
+    info = json.loads(probe.stdout)
+    meta = {
+        "platform": "bilibili",
+        "url": url,
+        "bvid": info.get("id", ""),
+        "title": info.get("title", ""),
+        "author": info.get("uploader", ""),
+        "desc": info.get("description", "") or "",
+        "duration": round(info.get("duration") or 0, 2),
+    }
+    thumb = info.get("thumbnail")
+    if thumb:
+        try:
+            (outdir / "cover.jpg").write_bytes(http(thumb, binary=True)[0])
+            meta["cover"] = "cover.jpg"
+        except Exception as e:
+            meta["coverError"] = str(e)
+    # Prefer H.264 (avc) over AV1 — older ffmpeg installs can't decode av1 for frame extraction
+    dl = run(["yt-dlp",
+              "-f", "bv*[vcodec^=avc1]+ba/bv*[vcodec^=avc]+ba/b[vcodec^=avc]/bv*+ba/b",
+              "--merge-output-format", "mp4",
+              "--no-playlist",
+              "-o", str(outdir / "video.%(ext)s"),
+              "--quiet", "--no-progress",
+              url])
+    if dl.returncode != 0:
+        meta["videoError"] = dl.stderr[-500:]
+        return meta
+    vids = [p for p in outdir.glob("video.*")
+            if p.suffix.lower() in (".mp4", ".mkv", ".flv", ".webm")
+            and not p.name.startswith("._")]
+    if not vids:
+        meta["videoError"] = "no video file produced"
+        return meta
+    vp = vids[0]
+    meta["videoFile"] = vp.name
+    dur = meta["duration"] or probe_duration(vp)
+    meta["duration"] = round(dur, 2)
+    # longer videos get more frames (~1/min, capped 36); short videos stay at 12
+    n = min(max(12, int(dur / 60)), 36)
+    extract_frames(vp, outdir / "frames", dur, n=n)
+    meta["frames"] = sorted(p.name for p in (outdir / "frames").glob("*.jpg")
+                            if not p.name.startswith("._"))
+    tr = transcribe(vp, outdir)
+    if tr:
+        meta["transcript"] = tr
+    return meta
 
 
 def detect(url):

@@ -1,6 +1,6 @@
 # xhs（小红书）to claude
 
-> 一个 [Claude Code Skill](https://docs.claude.com/en/docs/claude-code/skills)：把小红书分享链接粘给 Claude，它就能"看"到笔记里的视频、配图和台词。
+> 一个 [Claude Code Skill](https://docs.claude.com/en/docs/claude-code/skills)：把小红书或 B 站的分享链接粘给 Claude，它就能"看"到笔记/视频里的画面、配图和台词。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
@@ -40,6 +40,7 @@ cd xhs-to-claude
 bash install.sh
 
 brew install ffmpeg        # 必需
+pip install yt-dlp         # B 站需要
 pip install mlx-whisper    # 可选，转录用，Apple Silicon
 ```
 
@@ -75,11 +76,12 @@ python3 ~/.claude/skills/share-link/fetch.py "http://xhslink.com/o/xxxxx"
 
 - ✅ 小红书图文笔记：标题 / 文案 / 作者 / 封面 / 多图
 - ✅ 小红书视频笔记：以上全部 + 视频 + 12 帧 + whisper 转录
-- ⚠️ B 站：占位，未实现（Roadmap）
+- ✅ B 站视频：标题 / UP主 / 简介 / 封面 / 视频（偏好 H.264）+ 每分钟一帧（12-36 之间）+ whisper 转录
 
 ## 📦 依赖
 
 - Python ≥ 3.9、`ffmpeg`（必需）
+- `yt-dlp`（B 站需要；`pip install yt-dlp`）
 - `mlx-whisper`（可选，仅 Apple Silicon；没装自动跳过转录）
 - [Claude Code](https://docs.claude.com/en/docs/claude-code/overview)
 
